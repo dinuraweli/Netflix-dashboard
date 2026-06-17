@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Command Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { netflix: { red: '#E50914', dark: '#141414', card: '#1f1f1f' } } } }
+        }
+    </script>
+</head>
+<body class="bg-netflix-dark text-white font-sans antialiased min-h-screen p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header & Tabs -->
+        <header class="border-b border-zinc-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-black text-netflix-red tracking-tight">Command Center</h1>
+                <p class="text-zinc-400 mt-2 text-lg">Manage and analyze your binge-watching.</p>
+            </div>
+            
+            <!-- Tab Buttons -->
+            <div class="bg-zinc-900 p-1 rounded-lg flex space-x-1 border border-zinc-800">
+                <button id="tab-history" onclick="switchTab('history')" class="px-6 py-2 rounded-md bg-zinc-800 text-white font-semibold transition shadow-sm">Viewing History</button>
+                <button id="tab-watchlist" onclick="switchTab('watchlist')" class="px-6 py-2 rounded-md text-zinc-400 hover:text-white font-semibold transition">Watchlist Tracker</button>
+            </div>
+        </header>
+
+        <!-- Error Message Banner -->
+        <div id="error-banner" class="hidden bg-red-600 text-white p-4 rounded-xl shadow-lg mb-8 font-medium"></div>
+
+        <!-- ========================================== -->
+        <!-- TAB 1: VIEWING HISTORY DASHBOARD           -->
+        <!-- ========================================== -->
+        <div id="view-history" class="space-y-8 block">
+            
+            <!-- Spotlight Search -->
+            <section class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold text-white mb-4">Deep Dive: Title Spotlight</h2>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="w-full md:w-1/3">
+                        <input type="text" id="spotlight-search" list="title-options" placeholder="Search a show or movie..." class="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-netflix-red transition">
+                        <datalist id="title-options"></datalist>
+                    </div>
+                    <div id="spotlight-stats" class="w-full md:w-2/3 flex flex-wrap gap-4 items-center text-zinc-400 hidden">
+                        <div class="bg-zinc-900 px-4 py-2 rounded-lg border border-zinc-800"><span class="block text-xs uppercase tracking-wider mb-1">Times Watched</span><span id="spot-count" class="text-xl font-bold text-white">0</span></div>
+                        <div class="bg-zinc-900 px-4 py-2 rounded-lg border border-zinc-800"><span class="block text-xs uppercase tracking-wider mb-1">First Watched</span><span id="spot-first" class="text-xl font-bold text-white">-</span></div>
+                        <div class="bg-zinc-900 px-4 py-2 rounded-lg border border-zinc-800"><span class="block text-xs uppercase tracking-wider mb-1">Last Watched</span><span id="spot-last" class="text-xl font-bold text-white">-</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Summary Cards Grid -->
+            <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Unique TV Shows</h3>
+                    <p class="text-3xl font-bold text-white" id="unique-tv-shows">0</p>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Unique Movies</h3>
+                    <p class="text-3xl font-bold text-white" id="unique-movies">0</p>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Total TV Episodes</h3>
+                    <p class="text-3xl font-bold text-white" id="total-tv-episodes">0</p>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Most Watched</h3>
+                    <p class="text-xl font-bold text-white truncate w-full" id="top-show">Loading...</p>
+                    <p class="text-xs font-bold text-netflix-red mt-1" id="top-show-count">0 eps</p>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Max Binge (1 Day)</h3>
+                    <p class="text-xl font-bold text-white" id="binge-velocity">Loading...</p>
+                    <p class="text-xs font-bold text-netflix-red mt-1 truncate w-full" id="binge-show">...</p>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
+                    <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Rewatch Radar</h3>
+                    <p class="text-xl font-bold text-white truncate w-full" id="rewatch-title">Loading...</p>
+                    <p class="text-xs font-bold text-netflix-red mt-1" id="rewatch-count">0 times</p>
+                </div>
+            </section>
+
+            <!-- Charts Grid (Top Row) -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl">
+                    <h2 class="text-lg font-bold text-white mb-4">Top 5 Shows</h2>
+                    <div class="relative w-full h-64"><canvas id="showsChart"></canvas></div>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 class="text-lg font-bold text-white mb-4 w-full text-left">Viewing by Category</h2>
+                    <div class="relative w-full h-64 flex justify-center"><canvas id="categoryChart"></canvas></div>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 class="text-lg font-bold text-white mb-4 w-full text-left">Weekly Habits</h2>
+                    <div class="relative w-full h-64 flex justify-center"><canvas id="weeklyChart"></canvas></div>
+                </div>
+                <div class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 class="text-lg font-bold text-white mb-4 w-full text-left">Weekday vs Weekend</h2>
+                    <div class="relative w-full h-64 flex justify-center"><canvas id="weekendChart"></canvas></div>
+                </div>
+            </section>
+
+            <!-- Monthly Trends -->
+            <section class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold text-white mb-4">Monthly Viewing Trends</h2>
+                <div class="relative w-full h-72"><canvas id="monthlyChart"></canvas></div>
+            </section>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: WATCHLIST TRACKER                   -->
+        <!-- ========================================== -->
+        <div id="view-watchlist" class="space-y-8 hidden">
+            
+            <!-- Watchlist Header & Progress -->
+            <section class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">My Watchlist</h2>
+                        <p class="text-zinc-400">Track and conquer your backlog.</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-black text-white" id="completion-percent">0%</p>
+                        <p class="text-sm text-zinc-400 uppercase tracking-wider">Completed</p>
+                    </div>
+                </div>
+                <div class="w-full bg-zinc-800 rounded-full h-3 mb-2">
+                    <div class="bg-netflix-red h-3 rounded-full transition-all duration-1000" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <p class="text-sm text-zinc-400 text-center"><span id="wl-watched">0</span> watched / <span id="wl-total">0</span> total titles</p>
+            </section>
+
+            <!-- Actions: Add & Filter -->
+            <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Add New -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex gap-2">
+                    <input type="text" id="new-wl-title" placeholder="Add a new movie or show..." class="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                    <select id="new-wl-category" class="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                        <option value="Movie">Movie</option>
+                        <option value="TV Series">TV Series</option>
+                    </select>
+                    <button onclick="addWatchlistItem()" class="bg-netflix-red hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition">+</button>
+                </div>
+                
+                <!-- Search & Filter -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="wl-search" onkeyup="renderWatchlist()" placeholder="Search watchlist..." class="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                    <select id="wl-category-filter" onchange="renderWatchlist()" class="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                        <option value="all">All Categories</option>
+                        <option value="Movie">Movies</option>
+                        <option value="TV Series">TV Series</option>
+                    </select>
+                    <select id="wl-filter" onchange="renderWatchlist()" class="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="watched">Watched</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Watchlist Poster Grid -->
+            <section class="bg-netflix-card border border-zinc-800 rounded-2xl p-6 shadow-xl">
+                <div id="watchlist-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- EDIT MODAL                                 -->
+        <!-- ========================================== -->
+        <div id="edit-modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+            <div class="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+                <h2 class="text-xl font-bold text-white mb-4">Edit Watchlist Item</h2>
+                <input type="hidden" id="edit-id">
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-zinc-400 mb-1">Title</label>
+                        <input type="text" id="edit-title" class="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-zinc-400 mb-1">Category</label>
+                        <select id="edit-category" class="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-netflix-red">
+                            <option value="Movie">Movie</option>
+                            <option value="TV Series">TV Series</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button onclick="deleteItem()" class="px-4 py-2 bg-zinc-800 text-red-500 hover:bg-red-900/30 rounded-lg transition font-medium">Delete Item</button>
+                    <div class="space-x-2">
+                        <button onclick="closeEditModal()" class="px-4 py-2 text-zinc-400 hover:text-white transition font-medium">Cancel</button>
+                        <button onclick="saveEdit()" class="px-4 py-2 bg-netflix-red text-white rounded-lg hover:bg-red-700 transition font-medium">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // GLOBAL DATA STORAGE
+        let globalHistoryData = [];
+        let globalWatchlistData = [];
+        const OMDB_API_KEY = "YOUR_OMDB_API_KEY"; // <-- PASTE YOUR KEY HERE (e.g. "ab1234c")
+
+        // INITIALIZATION
+        async function initializeDashboard() {
+            await loadViewingHistory();
+            await loadWatchlist();
+        }
+
+        // --- TAB LOGIC ---
+        function switchTab(tabId) {
+            document.getElementById('view-history').classList.add('hidden');
+            document.getElementById('view-watchlist').classList.add('hidden');
+            
+            document.getElementById('tab-history').className = "px-6 py-2 rounded-md text-zinc-400 hover:text-white font-semibold transition";
+            document.getElementById('tab-watchlist').className = "px-6 py-2 rounded-md text-zinc-400 hover:text-white font-semibold transition";
+
+            if (tabId === 'history') {
+                document.getElementById('view-history').classList.remove('hidden');
+                document.getElementById('tab-history').className = "px-6 py-2 rounded-md bg-zinc-800 text-white font-semibold transition shadow-sm";
+            } else {
+                document.getElementById('view-watchlist').classList.remove('hidden');
+                document.getElementById('tab-watchlist').className = "px-6 py-2 rounded-md bg-zinc-800 text-white font-semibold transition shadow-sm";
+            }
+        }
+
+        // --- VIEWING HISTORY LOGIC ---
+        async function loadViewingHistory() {
+            try {
+                const response = await fetch('/api/history');
+                if (!response.ok) throw new Error("API returned an error");
+                globalHistoryData = await response.json();
+                processData(globalHistoryData);
+            } catch (error) {
+                console.error("Error loading history:", error);
+                showError("Failed to load Viewing History from the API. Make sure FastAPI is running!");
+            }
+        }
+
+        function processData(data) {
+            const showCounts = {};
+            const categoryCounts = {};
+            let totalTvEpisodes = 0;
+            const uniqueTvShows = new Set();
+            const uniqueMovies = new Set(); 
+            const bingeTracker = {};
+            const monthlyCounts = {};
+            const weeklyCounts = { 'Monday': 0, 'Tuesday': 0, 'Wednesday': 0, 'Thursday': 0, 'Friday': 0, 'Saturday': 0, 'Sunday': 0 };
+            const weekendCounts = { 'Weekday': 0, 'Weekend': 0 };
+            const exactTitleTracker = {}; 
+
+            data.forEach(entry => {
+                const title = entry['Title'];
+                const show = entry['Show Name'];
+                const category = entry['Category'];
+                const dateWatched = entry['Date'];
+                const day = entry['Day'];
+                const isWeekend = entry['Is_Weekend'];
+                
+                if (title) {
+                    exactTitleTracker[title] = (exactTitleTracker[title] || 0) + 1;
+                }
+
+                if (day && weeklyCounts[day] !== undefined) weeklyCounts[day]++;
+                
+                if (isWeekend !== undefined) {
+                    if (isWeekend) weekendCounts['Weekend']++;
+                    else weekendCounts['Weekday']++;
+                }
+                
+                if (category) {
+                    categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+                    
+                    if (category === 'TV Series') {
+                        totalTvEpisodes++;
+                        if (show) {
+                            showCounts[show] = (showCounts[show] || 0) + 1;
+                            uniqueTvShows.add(show); 
+                            
+                            if (dateWatched) {
+                                const bingeKey = `${dateWatched}|${show}`;
+                                bingeTracker[bingeKey] = (bingeTracker[bingeKey] || 0) + 1;
+                            }
+                        }
+                    } else if (category === 'Movie' && show) {
+                        uniqueMovies.add(show); 
+                    }
+                }
+
+                if (dateWatched) {
+                    const monthKey = dateWatched.substring(0, 7);
+                    monthlyCounts[monthKey] = (monthlyCounts[monthKey] || 0) + 1;
+                }
+            });
+
+            document.getElementById('unique-tv-shows').textContent = uniqueTvShows.size;
+            document.getElementById('unique-movies').textContent = uniqueMovies.size;
+            document.getElementById('total-tv-episodes').textContent = totalTvEpisodes;
+
+            const sortedShows = Object.entries(showCounts).sort((a, b) => b[1] - a[1]);
+            if (sortedShows.length > 0) {
+                document.getElementById('top-show').textContent = sortedShows[0][0];
+                document.getElementById('top-show-count').textContent = `${sortedShows[0][1]} episodes`;
+            }
+
+            let maxBingeCount = 0;
+            let maxBingeShow = "None";
+            for (const [key, count] of Object.entries(bingeTracker)) {
+                if (count > maxBingeCount) {
+                    maxBingeCount = count;
+                    maxBingeShow = key.split('|')[1]; 
+                }
+            }
+            document.getElementById('binge-velocity').textContent = maxBingeCount > 0 ? `${maxBingeCount} eps` : "N/A";
+            document.getElementById('binge-show').textContent = maxBingeShow;
+
+            let maxRewatchCount = 0;
+            let maxRewatchTitle = "None yet!";
+            for (const [title, count] of Object.entries(exactTitleTracker)) {
+                if (count > maxRewatchCount && count > 1) {
+                    maxRewatchCount = count;
+                    maxRewatchTitle = title;
+                }
+            }
+            document.getElementById('rewatch-title').textContent = maxRewatchTitle;
+            document.getElementById('rewatch-count').textContent = maxRewatchCount > 1 ? `${maxRewatchCount} times` : "-";
+
+            renderChart(sortedShows.slice(0, 5));
+            renderCategoryChart(categoryCounts);
+            renderWeeklyChart(weeklyCounts);
+            renderWeekendChart(weekendCounts);
+
+            const sortedMonths = Object.keys(monthlyCounts).sort();
+            const monthLabels = sortedMonths.map(m => {
+                const [year, month] = m.split('-');
+                const date = new Date(year, month - 1); 
+                return date.toLocaleDateString('default', { month: 'short', year: 'numeric' });
+            });
+            const monthData = sortedMonths.map(m => monthlyCounts[m]);
+            renderMonthlyChart(monthLabels, monthData);
+
+            setupSpotlight(data);
+        }
+
+        // --- WATCHLIST LOGIC ---
+        async function loadWatchlist() {
+            try {
+                const response = await fetch('/api/watchlist');
+                if (!response.ok) throw new Error("API returned an error");
+                const rawData = await response.json();
+                
+                globalWatchlistData = rawData.map(item => {
+                    let isWatched = false;
+                    let title = 'Unknown';
+                    let category = 'Unknown';
+
+                    for (let key in item) {
+                        const cleanKey = key.trim().toLowerCase();
+                        const cleanVal = item[key] ? String(item[key]).trim() : '';
+
+                        if (cleanVal.toLowerCase() === 'yes' || cleanVal.toLowerCase() === 'watched' || item['watched'] === true) {
+                            isWatched = true;
+                        }
+
+                        if (['title', 'name', 'show name', 'movie name'].includes(cleanKey)) {
+                            title = cleanVal;
+                        }
+
+                        if (['category', 'type', 'format', 'kind'].includes(cleanKey)) {
+                            category = cleanVal;
+                        }
+                    }
+
+                    if (title === 'Unknown') title = item['Title'] || item['Name'] || item['Show Name'] || 'Unknown';
+                    if (category === 'Unknown') category = item['Category'] || item['Type'] || 'Unknown';
+
+                    return {
+                        title: title,
+                        category: category,
+                        watched: isWatched,
+                        posterUrl: item.posterUrl || null,
+                        id: item['id'] || Math.random().toString(36).substr(2, 9)
+                    };
+                });
+                
+                renderWatchlist();
+            } catch (error) {
+                console.error("Error loading watchlist:", error);
+            }
+        }
+
+        function renderWatchlist() {
+            const grid = document.getElementById('watchlist-grid');
+            const searchQ = document.getElementById('wl-search').value.toLowerCase();
+            const filter = document.getElementById('wl-filter').value;
+            const categoryFilter = document.getElementById('wl-category-filter').value;
+            
+            grid.innerHTML = '';
+            
+            let total = 0;
+            let watchedCount = 0;
+
+            globalWatchlistData.forEach(item => {
+                total++;
+                if (item.watched) watchedCount++;
+
+                // Apply Filters
+                if (filter === 'pending' && item.watched) return;
+                if (filter === 'watched' && !item.watched) return;
+                if (searchQ && !item.title.toLowerCase().includes(searchQ)) return;
+                
+                // Category Filter Check
+                if (categoryFilter !== 'all') {
+                    const checkCat = item.category.toLowerCase();
+                    const isMovie = checkCat.includes('movie');
+                    const isTV = checkCat.includes('tv') || checkCat.includes('series') || checkCat.includes('show');
+                    
+                    if (categoryFilter === 'Movie' && !isMovie) return;
+                    if (categoryFilter === 'TV Series' && !isTV) return;
+                }
+
+                // Setup the image or fallback
+                const imgSrc = item.posterUrl ? item.posterUrl : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; 
+                const textHidden = item.posterUrl ? 'opacity-0 group-hover:opacity-100 transition-opacity' : '';
+
+                // Construct Grid Card
+                const cardHTML = `
+                    <div class="relative group rounded-xl overflow-hidden shadow-lg border border-zinc-800 bg-zinc-900 aspect-[2/3] cursor-pointer transition-transform duration-300 hover:-translate-y-2" onclick="toggleWatched('${item.id}')">
+                        <!-- Poster Image -->
+                        <img id="img-${item.id}" src="${imgSrc}" class="w-full h-full object-cover transition duration-500 ${item.watched ? 'opacity-30 grayscale' : 'group-hover:opacity-75'}" />
+                        
+                        <!-- Fallback Text Overlay -->
+                        <div id="text-${item.id}" class="${textHidden} absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-[#141414] via-[#141414]/80 to-transparent">
+                            <h3 class="text-white font-bold text-base md:text-lg leading-tight mb-1 shadow-black drop-shadow-md">${item.title}</h3>
+                            <span class="text-xs text-zinc-400 uppercase tracking-wider drop-shadow-md">${item.category}</span>
+                        </div>
+
+                        <!-- Checkmark Badge -->
+                        <div class="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all shadow-lg ${item.watched ? 'bg-netflix-red border-netflix-red text-white' : 'bg-black/60 border-zinc-400 text-transparent group-hover:border-white'}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        
+                        <!-- Edit Button -->
+                        <button onclick="openEditModal(event, '${item.id}')" class="absolute top-3 left-3 w-8 h-8 rounded-full flex items-center justify-center bg-black/60 border-2 border-zinc-400 text-zinc-300 opacity-0 group-hover:opacity-100 transition-all hover:bg-zinc-800 hover:text-white hover:border-white shadow-lg z-10">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                    </div>
+                `;
+                
+                grid.insertAdjacentHTML('beforeend', cardHTML);
+
+                // If no poster is saved, ask OMDb for one!
+                if (!item.posterUrl && OMDB_API_KEY && OMDB_API_KEY !== "23fd73d8") {
+                    fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(item.title)}&apikey=${OMDB_API_KEY}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.Response === "True" && data.Poster && data.Poster !== "N/A") {
+                                // Save the poster to our data array
+                                item.posterUrl = data.Poster;
+                                
+                                // Instantly update the UI without re-rendering everything
+                                const imgEl = document.getElementById(`img-${item.id}`);
+                                const textEl = document.getElementById(`text-${item.id}`);
+                                
+                                if (imgEl) imgEl.src = item.posterUrl;
+                                if (textEl) textEl.classList.add('opacity-0', 'group-hover:opacity-100');
+                                
+                                // Save this newly discovered poster URL permanently to our backend!
+                                saveWatchlistToBackend();
+                            }
+                        })
+                        .catch(err => console.log("Failed to load poster:", err));
+                }
+            });
+
+            // Update Progress Stats
+            document.getElementById('wl-total').textContent = total;
+            document.getElementById('wl-watched').textContent = watchedCount;
+            const percent = total === 0 ? 0 : Math.round((watchedCount / total) * 100);
+            document.getElementById('completion-percent').textContent = `${percent}%`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        // --- FULL-STACK ACTIONS ---
+        function toggleWatched(id) {
+            const item = globalWatchlistData.find(i => i.id === id);
+            if (item) {
+                item.watched = !item.watched;
+                renderWatchlist();
+                saveWatchlistToBackend(); // Persist changes
+            }
+        }
+
+        function addWatchlistItem() {
+            const titleInput = document.getElementById('new-wl-title');
+            const categorySelect = document.getElementById('new-wl-category');
+            
+            if (titleInput.value.trim() === '') return;
+            
+            globalWatchlistData.unshift({
+                title: titleInput.value.trim(),
+                category: categorySelect.value,
+                watched: false,
+                posterUrl: null, // Will trigger a fetch!
+                id: Math.random().toString(36).substr(2, 9)
+            });
+            
+            titleInput.value = '';
+            renderWatchlist();
+            saveWatchlistToBackend();
+        }
+
+        // --- EDIT MODAL LOGIC ---
+        function openEditModal(event, id) {
+            event.stopPropagation(); // Prevents the card from being marked as 'watched' when clicking the edit button
+            const item = globalWatchlistData.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('edit-id').value = item.id;
+            document.getElementById('edit-title').value = item.title;
+            
+            // Normalize category for the dropdown
+            const cat = item.category.toLowerCase().includes('movie') ? 'Movie' : 'TV Series';
+            document.getElementById('edit-category').value = cat;
+
+            const modal = document.getElementById('edit-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('edit-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveEdit() {
+            const id = document.getElementById('edit-id').value;
+            const newTitle = document.getElementById('edit-title').value.trim();
+            const newCategory = document.getElementById('edit-category').value;
+
+            if (!newTitle) return;
+
+            const item = globalWatchlistData.find(i => i.id === id);
+            if (item) {
+                // If title changed, clear the poster so it fetches a new one!
+                if (item.title !== newTitle) {
+                    item.posterUrl = null;
+                }
+                item.title = newTitle;
+                item.category = newCategory;
+                
+                renderWatchlist();
+                saveWatchlistToBackend();
+                closeEditModal();
+            }
+        }
+
+        function deleteItem() {
+            const id = document.getElementById('edit-id').value;
+            globalWatchlistData = globalWatchlistData.filter(i => i.id !== id);
+            
+            renderWatchlist();
+            saveWatchlistToBackend();
+            closeEditModal();
+        }
+
+        // --- SEND TO FASTAPI ---
+        async function saveWatchlistToBackend() {
+            try {
+                await fetch('/api/watchlist/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(globalWatchlistData)
+                });
+            } catch (error) {
+                console.error("Failed to save to backend:", error);
+            }
+        }
+
+        // --- UTILITIES & CHARTS ---
+        function showError(msg) {
+            const eb = document.getElementById('error-banner');
+            eb.classList.remove('hidden');
+            eb.innerHTML = msg;
+        }
+
+        const cRed = '#E50914', cGrid = 'rgba(255,255,255,0.05)', cText = '#9ca3af';
+
+        function renderChart(data) {
+            new Chart(document.getElementById('showsChart'), {
+                type: 'bar',
+                data: { labels: data.map(i=>i[0]), datasets: [{ data: data.map(i=>i[1]), backgroundColor: cRed, borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: cGrid }, ticks: { color: cText } }, x: { grid: { display: false }, ticks: { color: cText } } } }
+            });
+        }
+        function renderCategoryChart(data) {
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: { labels: Object.keys(data), datasets: [{ data: Object.values(data), backgroundColor: [cRed, '#3f3f46', '#ffffff'], borderColor: '#1f1f1f', borderWidth: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: cText } } } }
+            });
+        }
+        function renderWeeklyChart(data) {
+            new Chart(document.getElementById('weeklyChart'), {
+                type: 'radar',
+                data: { labels: Object.keys(data), datasets: [{ data: Object.values(data), backgroundColor: 'rgba(229,9,20,0.2)', borderColor: cRed, pointBackgroundColor: '#1f1f1f' }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { angleLines: { color: cGrid }, grid: { color: cGrid }, ticks: { display: false } } } }
+            });
+        }
+        function renderWeekendChart(data) {
+            new Chart(document.getElementById('weekendChart'), {
+                type: 'pie',
+                data: { labels: Object.keys(data), datasets: [{ data: Object.values(data), backgroundColor: [cRed, '#52525b'], borderColor: '#1f1f1f', borderWidth: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: cText } } } }
+            });
+        }
+        function renderMonthlyChart(labels, data) {
+            new Chart(document.getElementById('monthlyChart'), {
+                type: 'line',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: 'rgba(229,9,20,0.1)', borderColor: cRed, borderWidth: 3, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: cGrid }, ticks: { color: cText } }, x: { grid: { display: false }, ticks: { color: cText } } } }
+            });
+        }
+
+        function setupSpotlight(data) {
+            const uniqueTitles = [...new Set(data.map(e => e['Show Name']).filter(Boolean))].sort();
+            const datalist = document.getElementById('title-options');
+            datalist.innerHTML = uniqueTitles.map(t => `<option value="${t}">`).join('');
+
+            document.getElementById('spotlight-search').addEventListener('input', (e) => {
+                const searchStr = e.target.value;
+                const statsDiv = document.getElementById('spotlight-stats');
+                
+                if (!uniqueTitles.includes(searchStr)) { statsDiv.classList.add('hidden'); return; }
+
+                const history = data.filter(entry => entry['Show Name'] === searchStr);
+                const dates = history.map(h => h['Date']).filter(Boolean).sort();
+                
+                document.getElementById('spot-count').textContent = history.length;
+                document.getElementById('spot-first').textContent = dates.length > 0 ? dates[0] : 'N/A';
+                document.getElementById('spot-last').textContent = dates.length > 0 ? dates[dates.length - 1] : 'N/A';
+                
+                statsDiv.classList.remove('hidden');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+</body>
+</html>
