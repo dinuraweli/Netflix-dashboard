@@ -210,7 +210,8 @@
         // GLOBAL DATA STORAGE
         let globalHistoryData = [];
         let globalWatchlistData = [];
-        const OMDB_API_KEY = "YOUR_OMDB_API_KEY"; // <-- PASTE YOUR KEY HERE (e.g. "ab1234c")
+        const OMDB_API_KEY = "23fd73d8"; // Optional: set your OMDb API key here to auto-fetch posters.
+        // Example: const OMDB_API_KEY = "ab1234c";
 
         // INITIALIZATION
         async function initializeDashboard() {
@@ -385,11 +386,14 @@
                     if (title === 'Unknown') title = item['Title'] || item['Name'] || item['Show Name'] || 'Unknown';
                     if (category === 'Unknown') category = item['Category'] || item['Type'] || 'Unknown';
 
+                    const posterUrl = String(item.posterUrl || '').trim();
+                    const validPoster = posterUrl && posterUrl !== 'null' && posterUrl !== 'NOT_FOUND' && posterUrl !== 'N/A';
+
                     return {
                         title: title,
                         category: category,
                         watched: isWatched,
-                        posterUrl: item.posterUrl || null,
+                        posterUrl: validPoster ? posterUrl : null,
                         id: item['id'] || Math.random().toString(36).substr(2, 9)
                     };
                 });
@@ -461,26 +465,20 @@
                 grid.insertAdjacentHTML('beforeend', cardHTML);
 
                 // If no poster is saved, ask OMDb for one!
-                if (!item.posterUrl && OMDB_API_KEY && OMDB_API_KEY !== "23fd73d8") {
+                if (!item.posterUrl && OMDB_API_KEY) {
                     fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(item.title)}&apikey=${OMDB_API_KEY}`)
                         .then(response => response.json())
                         .then(data => {
                             if (data.Response === "True" && data.Poster && data.Poster !== "N/A") {
-                                // Save the poster to our data array
                                 item.posterUrl = data.Poster;
-                                
-                                // Instantly update the UI without re-rendering everything
                                 const imgEl = document.getElementById(`img-${item.id}`);
                                 const textEl = document.getElementById(`text-${item.id}`);
-                                
                                 if (imgEl) imgEl.src = item.posterUrl;
                                 if (textEl) textEl.classList.add('opacity-0', 'group-hover:opacity-100');
-                                
-                                // Save this newly discovered poster URL permanently to our backend!
                                 saveWatchlistToBackend();
                             }
                         })
-                        .catch(err => console.log("Failed to load poster:", err));
+                        .catch(err => console.warn("OMDb poster fetch failed for", item.title, err));
                 }
             });
 

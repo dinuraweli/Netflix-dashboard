@@ -1,5 +1,89 @@
 [
     {
+        "title": "Skyfall",
+        "category": "Movie",
+        "watched": true,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BNjAzMWNkODUtM2FlMi00NzgyLWJhMGUtMWEyNDYyZGFiN2RlXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "ezybm1qj2"
+    },
+    {
+        "title": "Sunny Sanskrit ki Tulsi Kumari",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": null,
+        "id": "71vyrcty9"
+    },
+    {
+        "title": "Loving Adults",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BZDMyZjk3NDgtMjk5MS00NDk4LWI0ZjctYmJlOTg4MjU0MTRiXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "sw9eo9taq"
+    },
+    {
+        "title": "Gangs of Galicia",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BNDIxNzdhMjItMGFkMS00OGZjLWIyMjAtNTJjMzM4MzkzYmM5XkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "uiu3uu3o6"
+    },
+    {
+        "title": "No Time to Die",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BZGZiOGZhZDQtZmRkNy00ZmUzLTliMGEtZGU0NjExOGMxZDVkXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "a081b4nwo"
+    },
+    {
+        "title": "Love & Death",
+        "category": "TV Series",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BYjkwYzU3MWItMzkwMi00MmZhLWEzMzAtZDcwN2MwYTU0NTRiXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "nsbhuaet2"
+    },
+    {
+        "title": "Heatwave",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BYTViMjI5MjktN2ZiYy00YmE2LTk3YTItNDU1NjMxMzYxOGZhXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "qmpv0ken3"
+    },
+    {
+        "title": "The Blue Lagoon",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BYWJiNTViMTUtNzAwNy00OGNkLWI2NzQtYWFiNTBmMjA4ODI0XkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "gq7tk48tc"
+    },
+    {
+        "title": "Return to the Blue Lagoon",
+        "category": "Movie",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BNWZlNDZmYWItODhlNC00MTFjLWI4NjctOWQzYjhhOTc0OTc2XkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "1qa1aspbm"
+    },
+    {
+        "title": "White lines",
+        "category": "TV Series",
+        "watched": false,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BMWIzYjk4ZDEtN2EyZC00OGZkLWJkYWYtY2M0NWIxODJlZjRlXkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "wken77w4q"
+    },
+    {
+        "title": "Playing with fire",
+        "category": "TV Series",
+        "watched": true,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BYTBmNGU1OTctZmNmOS00MTUwLTg2NTktZDdhMGI3MWU1YTY1XkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "858lgdjnh"
+    },
+    {
+        "title": "Oasis",
+        "category": "TV Series",
+        "watched": true,
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BZjAwZWVjOGMtODA5OS00YWEwLWFhYTYtZGRlZWYxNzkzYzE1XkEyXkFqcGc@._V1_SX300.jpg",
+        "id": "y1rksv1md"
+    },
+    {
         "title": "The Mentalist",
         "category": "TV Series",
         "watched": true,
@@ -9,21 +93,21 @@
     {
         "title": "Spectre",
         "category": "Movie",
-        "watched": false,
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BMzA5MzFiNDAtYTI0NC00MDE5LTljYTctYTNkODk1OTZlODI5XkEyXkFqcGc@._V1_SX300.jpg",
         "id": "k5mhpdfd1"
     },
     {
         "title": "Casino Royale",
         "category": "Movie",
-        "watched": false,
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BMWQ1ZDM4NDktMWY0NC00MjcxLWJlMDMtNmE2MGVhYzRjMWQ0XkEyXkFqcGc@._V1_SX300.jpg",
         "id": "mfu92dtjg"
     },
     {
         "title": "Quantum of Solace",
         "category": "Movie",
-        "watched": false,
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BYmMwZTA3MTAtNWU0Yy00NGZmLTg0YmItZTVkZGFjZTI1ZWJiXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "q9zr25ybd"
     },
@@ -45,7 +129,7 @@
         "title": "A Good Girls Guide to Murder",
         "category": "TV Series",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "gncu7cyfk"
     },
     {
@@ -78,7 +162,7 @@
     },
     {
         "title": "Just go with it",
-        "category": "TV Series",
+        "category": "Movie",
         "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BMTM3MzM3NDE5MV5BMl5BanBnXkFtZTcwNDE5MTUxNA@@._V1_QL75_UX380_CR0,0,380,562_.jpg",
         "id": "neiyqpfgb"
@@ -92,7 +176,7 @@
     },
     {
         "title": "Back in Action",
-        "category": "TV Series",
+        "category": "Movie",
         "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BMWQ4YWYxYTAtZTlhNC00Nzc3LWE3OWUtZjY5MThlNWNiYTBiXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "5hg3dv4jg"
@@ -106,7 +190,7 @@
     },
     {
         "title": "mission: impossible dead reckoning",
-        "category": "Unknown",
+        "category": "Movie",
         "watched": false,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BN2U4OTdmM2QtZTkxYy00ZmQyLTg2N2UtMDdmMGJmNDhlZDU1XkEyXkFqcGc@._V1_QL75_UY562_CR1,0,380,562_.jpg",
         "id": "hjktft53x"
@@ -248,7 +332,7 @@
         "title": "until you burn",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "6v0gt2mks"
     },
     {
@@ -276,7 +360,7 @@
         "title": "a true gentlemen",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "8m98zzgvv"
     },
     {
@@ -367,7 +451,7 @@
         "title": "Aap jaisa coi",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "4fxvb5nkh"
     },
     {
@@ -388,7 +472,7 @@
         "title": "Oho Ethan baby",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "sp87pnh7n"
     },
     {
@@ -409,7 +493,7 @@
         "title": "A widows game",
         "category": "Unknown",
         "watched": true,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "cnjy88uvs"
     },
     {
@@ -444,7 +528,7 @@
         "title": "Newly rich and newly poor",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "tbupskuxe"
     },
     {
@@ -500,14 +584,14 @@
         "title": "Fire fly lane",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "7xx60iyzd"
     },
     {
         "title": "Tonight your sleeping with me",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "9uddqvt38"
     },
     {
@@ -520,7 +604,7 @@
     {
         "title": "Asterix",
         "category": "Unknown",
-        "watched": false,
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BZmIxOGU5MzMtOGQzMS00NzQxLWI1NDYtZmEwODNiNDczMmFhL2ltYWdlXkEyXkFqcGdeQXVyNjY0NzU4Nzc@._V1_SX300.jpg",
         "id": "3spgkapgs"
     },
@@ -638,7 +722,7 @@
     },
     {
         "title": "The big short",
-        "category": "TV Series",
+        "category": "Movie",
         "watched": false,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BZDZkNDQ3YjktYjBlZC00YTY1LTgxOGYtY2RhMWFhZmNkZGY3XkEyXkFqcGc@._V1_SX300.jpg",
         "id": "r71zws5k4"
@@ -710,7 +794,7 @@
         "title": "Sikandar ka mudadas",
         "category": "TV Series",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "u1gwaox0v"
     },
     {
@@ -794,7 +878,7 @@
         "title": "Xindagi na miles dobabra",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "pqtutboec"
     },
     {
@@ -813,7 +897,7 @@
     },
     {
         "title": "Dil dhadakne do",
-        "category": "TV Series",
+        "category": "Movie",
         "watched": false,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BZmExOTlmNDAtYWMzZC00NzEyLWFhYmYtNTgwMjZiMDRhMDQyXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "euf25v8to"
@@ -822,7 +906,7 @@
         "title": "IC814",
         "category": "TV Series",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "avc3qhaxp"
     },
     {
@@ -857,7 +941,7 @@
         "title": "Tallish",
         "category": "TV Series",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "ofppkb3cq"
     },
     {
@@ -878,7 +962,7 @@
         "title": "Dear zindavgi",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "l1dg7an2e"
     },
     {
@@ -997,21 +1081,21 @@
         "title": "transformers the last night",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "832mbtwy6"
     },
     {
         "title": "Malang unleash th madness",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "gad2mpria"
     },
     {
-        "title": "Mother if the bride",
-        "category": "Unknown",
+        "title": "Mother of the bride",
+        "category": "TV Series",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": "https://m.media-amazon.com/images/M/MV5BYmY3YTExZTEtYWViMy00ZDQ0LWJlZGMtYTU2Yzc1NGE3MzgzXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "13deq3v1u"
     },
     {
@@ -1039,7 +1123,7 @@
         "title": "Satin shinde ka viral video",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "qrh9hircc"
     },
     {
@@ -1165,7 +1249,7 @@
         "title": "Through my window 3",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "ofbfxntpv"
     },
     {
@@ -1214,7 +1298,7 @@
         "title": "To all the boys 3",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "j49doza8x"
     },
     {
@@ -1275,7 +1359,7 @@
     },
     {
         "title": "The tailor",
-        "category": "Unknown",
+        "category": "TV Series",
         "watched": false,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BZjMxY2VjYzktNmY1ZS00YzcyLWFhYzUtMGRjMzU4MDJiMWVjXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "0josg964l"
@@ -1284,7 +1368,7 @@
         "title": "Fitter",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "6xbl3b6n0"
     },
     {
@@ -1340,7 +1424,7 @@
         "title": "Chandra much",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "jsiugsj21"
     },
     {
@@ -1361,7 +1445,7 @@
         "title": "Through my window 2",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "ee8gfxwfs"
     },
     {
@@ -1396,7 +1480,7 @@
         "title": "Man vd bee",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "kuq6dt8gv"
     },
     {
@@ -1417,7 +1501,7 @@
         "title": "The greatest night of pop",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "w9rwf9jqn"
     },
     {
@@ -1445,28 +1529,28 @@
         "title": "Dhaka Dhaka",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "081poamj8"
     },
     {
         "title": "Male me believe",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "5030wov03"
     },
     {
         "title": "Good bye earth",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "jnis4vmmq"
     },
     {
         "title": "Lovehard",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "qv6zk82ai"
     },
     {
@@ -1508,7 +1592,7 @@
         "title": "Lies and deceit",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "q0yosutj6"
     },
     {
@@ -1522,7 +1606,7 @@
         "title": "A tourists guide to love",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "z9f14clvw"
     },
     {
@@ -1578,14 +1662,14 @@
         "title": "The hikacking of flight 601",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "42fmhsdko"
     },
     {
         "title": "Chernobyl 1986",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "qkewcb36h"
     },
     {
@@ -1599,7 +1683,7 @@
         "title": "Sky high the series no limit",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "gb6rrc67e"
     },
     {
@@ -1641,7 +1725,7 @@
         "title": "Blood sex and royalty",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "oug4pm3w5"
     },
     {
@@ -1655,14 +1739,14 @@
         "title": "The mind explaied",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "gjyg02lgc"
     },
     {
         "title": "Night books",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "xi8qbvkfs"
     },
     {
@@ -1744,8 +1828,8 @@
     },
     {
         "title": "do deewane seher mein",
-        "category": "Unknown",
-        "watched": false,
+        "category": "Movie",
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BNzQ2MmEyNGMtYTMyYS00YTUwLTg5YjYtYWUwN2I5M2JiMzhiXkEyXkFqcGc@._V1_SX300.jpg",
         "id": "4j2dicd6k"
     },
@@ -1774,7 +1858,7 @@
         "title": "vladimir",
         "category": "Unknown",
         "watched": false,
-        "posterUrl": "NOT_FOUND",
+        "posterUrl": null,
         "id": "e1n44uupn"
     },
     {
@@ -1794,7 +1878,7 @@
     {
         "title": "person of interest",
         "category": "Unknown",
-        "watched": false,
+        "watched": true,
         "posterUrl": "https://m.media-amazon.com/images/M/MV5BOTcxNDJiMTUtN2ZhZS00OGE1LWJmZmYtN2VhYThiZTBhYWM1XkEyXkFqcGc@._V1_SX300.jpg",
         "id": "ubi3aqz6u"
     },
